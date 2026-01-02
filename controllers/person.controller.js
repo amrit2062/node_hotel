@@ -20,7 +20,7 @@ exports.createPerson = async (req, res) => {
 
 exports.getPerson = async (req, res) => {
   try {
-    const data = await Person.find().limit(1);
+    const data = await Person.find().limit();
     console.log("data fetched");
     res.status(200).json(data);
   } catch (err) {

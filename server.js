@@ -1,25 +1,24 @@
-// database connection in mongoDB in node js
-
 const express = require("express");
+require("dotenv").config();
+
 const app = express();
-const db = require("./config/db");
 const routes = require("./routes/index");
+require("./config/db"); // just require to connect DB
 const bodyParser = require("body-parser");
 
+// Built-in middleware (no body-parser needed)
+app.use(express.json());
 
-
-app.use(bodyParser.json()); //req.body
-
-app.get("/", function (req, res) {
-  res.send(
-    "welcome to my hotel .... how i can help you? we have list of menus"
-  );
+// Test route
+app.get("/", (req, res) => {
+  res.send("welcome to my hotel .... how i can help you? we have list of menus");
 });
 
+// API routes
 app.use("/api", routes);
 
-//get routes to menu data
-
-app.listen(3000,"0.0.0.0", () => {
-  console.log("Listening on port 3000");
+const PORT = process.env.PORT || 3000
+console.log(PORT)
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(` Server running on port ${PORT}`);
 });
