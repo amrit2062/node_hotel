@@ -52,6 +52,7 @@ exports.getmenuTaste = async (req, res) => {
     res.status(200).json({ error: "Internal server  error " });
   }
 };
+// deleted the menuitems in this api 
 exports.deletedMenutaste = async (req, res) => {
   try {
     const menuID = req.params.id; // extract the id form url parameters
