@@ -1,0 +1,150 @@
+console.log("server file running ");
+
+Function in  are node js  call back function :
+
+function add(a,b){// function name add
+return a+b;
+} var result = add(2,7);  //call the function and return the two numbers
+console.log(result);
+
+another method declare the function in node js
+
+ var add = function(a,b){ // function name add and give the parameter a, b
+ return a+b; // return the function  a and b sum
+ }
+ var result = add(2,7);//number retrun  for the add function
+   console.log(result);// display the result for console output
+
+// arrow function for the node js :
+ var add = (a,b) => {return a+b;} // function name add and retun the prameter a,b
+ var result = add (233,7)  // add the function return the numbers
+
+  console.log(result); // display result
+
+  // another changes for the  given arrow function
+   var add = (a, b) => a+b;
+   var result = add(200,2)
+   console.log(result);
+
+   // add function add();
+   // differnces between normal variable add is normal variable add(); is the function
+   (function(){ // no name function
+    console.log('amrit is added for the new backend is the programming node js '); // display the  content for this function
+})();// calling the function () ;
+
+callback function
+ function callback(){
+    console.log('adding successfully completed ');
+ }
+
+  var add = function(a,b,callback){// main function  works complited
+    // call back function works main function works end then after works  callback function
+    var result = a+b; //
+    console.log('result:'+ result);
+    callback();
+
+  }
+  add(3,10,callback);
+
+another  short form written the function  given below
+function are already call this function are  callback function
+
+const add = function (a, b, amrit) {
+  var result = a + b;
+  console.log("result:" + result); // main function work complete
+  amrit(); // amrit is the  callback function
+};
+add(100, 200, function () {
+  console.log("add completed");
+});
+//  add(2,4,function(){
+
+//     console.log('add completed');
+//  });
+add(2, 4, () => console.log("add completed")); // used this function for the  normal coding because this function handy short and most usefuly
+add  function pass the three parameters frist ,second numbers, and last are function passed
+
+var fs = require ('fs'); //  fs: means the file system libary in this system
+var os = require('os');
+
+ var user = os.userInfo();
+ console.log(user.username);
+
+ fs.appendFile("greeting.txt", "hi" + user.username + '!\n', ()=>{// username gives by the os and  display by the console
+    console.log("file is created ");
+ });
+
+ //  to the os works in node js working its explain  with work
+
+ console.log(os);
+
+how to file  import in node js
+const notes = require("./notes.js");
+var _ = require("lodash"); //  underscore that means already  gives package that are use lodash are the different inbulid function gives
+
+console.log("server file is available ");
+var age = notes.age; // notes.js file variable use to the current file syntax
+var result = notes.addNumners(age + 18, 10); // two argurement pass from the addNumbers functions
+console.log("result is now " + result);
+console.log(age);
+
+var data = ["person", "person", 1, 2, 1, 2, "name", "age", "2"];
+var filter = _.uniq(data);
+console.log(filter);
+console.log(_.isString('prince'));
+console.log(_.isString(5));
+console.log(_.isString(false));
+
+server in node js : defines as the listen the client requriments and provides the client requirements data
+json in node js  example
+
+ const jsonString = '{"name":"amritpaudel", "age": 21, "city":"ktm"}';
+ const  jsononObject = JSON.parse(jsonString)
+ console.log(jsononObject.name,jsononObject.city);
+
+ // json object print to all data
+   const objectToConverts = {
+    name:"amrit",
+    age:32
+   };
+    const json = JSON.stringify(objectToConverts); // convert object to JSON string
+    console.log(json);
+    console.log(typeof json);
+
+developed the server in node js
+const express = require("express");
+const app = express();
+
+// client request from the browsers
+// server will to developed node js programming returns .get the response to server from the user
+app.get("/", function (req, res) {
+  res.send("hello world welcome to my hotel  how  i can help you");
+});
+// arrow function
+
+app.get("/chicken", (req, res) => {
+  res.send("sure sir i would to service chicken");
+});
+app.get("/nepal", (req, res) => {
+  res.send("welcome to nepal .nepali guys are most beautiful");
+});
+app.get("/amrit", (req, res) => {
+  res.send("welcome to my home");
+});
+
+app.get("/idli", (req, res) => {
+  var customized_idli = {
+    name: "amrit paudel",
+    size: "10 cm diameter",
+    is_sambhar: true,
+    is_chutney: false,
+    class: "7-sem ",
+  };
+  res.send(customized_idli);
+});
+app.post("/items", (req, res) => {
+  res.send("data is saved");
+});
+app.listen(3000, () => {
+  console.log("server listening port 3000 ");
+});
