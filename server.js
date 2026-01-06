@@ -3,15 +3,13 @@ require("dotenv").config();
 
 const app = express();
 const routes = require("./routes/index");
-require("./config/db"); // just require to connect DB
-const bodyParser = require("body-parser");
+require("./config/db");
 
-// Built-in middleware (no body-parser needed)
 app.use(express.json());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("welcome to my hotel .... how i can help you? we have list of menus");
+  res.send("welcome to my hotel .... how i can help you? we have list of menus ..");
 });
 
 // API routes
