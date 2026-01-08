@@ -88,7 +88,7 @@ var result = notes.addNumners(age + 18, 10); // two argurement pass from the add
 console.log("result is now " + result);
 console.log(age);
 
-var data = ["person", "person", 1, 2, 1, 2, "name", "age", "2"];
+var data = ["employee", "employee", 1, 2, 1, 2, "name", "age", "2"];
 var filter = _.uniq(data);
 console.log(filter);
 console.log(_.isString('prince'));

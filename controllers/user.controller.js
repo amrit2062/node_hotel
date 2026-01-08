@@ -21,6 +21,16 @@ exports.Register = async (req, res) => {
       });
     }
 
+    // function validate email format usin regex
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        sucess: false,
+        message: "Invaid email format",
+      });
+    }
+
     const phoneExists = await User.findOne({ phone });
     if (phoneExists) {
       return res.status(400).json({
@@ -130,6 +140,131 @@ exports.profile = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal server error",
+    });
+  }
+};
+exports.updateUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, phone, email } = req.body;
+
+    //check phone uniqueness (if updating phone)
+
+    if (phone) {
+      const phoneExists = await User.findOne({ phone });
+      if (phoneExists && phoneExists._id.toString() !== userId) {
+        res.status(400).json({
+          sucess: false,
+          message: "phone number is already in use",
+        });
+      }
+    }
+    /// check updated objext( one by one Or both)
+    const updatedData = {};
+    if (name) updatedData.name = name;
+    if (phone) updatedData.phone = phone;
+    const updateUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updatedData },
+      { new: true }
+    );
+
+    if (!updateUser) {
+      res.status(404).json({
+        sucess: false,
+        message: "user not found",
+      });
+    }
+    res.status(200).json({
+      sucess: true,
+      message: "user updated successfully",
+      user: {
+        id: updateUser._id,
+        name: updateUser.name,
+        phone: updateUser.phone,
+      },
+    });
+
+    // function validate email format usin regex
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        sucess: false,
+        message: "Invaid email format",
+      });
+    }
+    res.json({
+      sucess: true,
+      message: "email is valid",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      sucess: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// changed password
+exports.changePassword = async (req, res) => {
+  try {
+    //get user id from authentication session
+    const userId = req.user.id;
+    //extract password from the request body
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    // find the databases
+    const user = await User.findById(userId).select("+password");
+
+    if (!user) {
+      return res.status(404).json({
+        sucess: false,
+        message: "user not found",
+      });
+    }
+
+    //check if the password and confirm password match
+    if (newPassword !== confirmPassword) {
+      return res.status(404).json({
+        sucess: false,
+        message: "new  password and confirmation password do not match",
+      });
+    }
+    // compare current password with hashed in the databases
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({
+        sucess: false,
+        message: "invalid current password",
+      });
+    }
+    // option new  password is same old password
+    const isSameAsOld = await bcrypt.compare(newPassword, user.password);
+    if (isSameAsOld) {
+      return res.status(400).json({
+        sucess: false,
+        message: "new password cannot be the same as the current password ",
+      });
+    }
+    // hash  the newpassword
+    const saltRounds = 10;
+    const hashNewpassword = await bcrypt.hash(newPassword, saltRounds);
+
+    //updated the user password in the databases
+    user.password = hashNewpassword;
+    await user.save(); //mongoose presave  hooks can also handle hashing
+
+    // send  a success response
+    res.status(200).json({
+      sucess: true,
+      message: "password changed sucessfully",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      sucess: false,
+      message: "server error during password change",
     });
   }
 };

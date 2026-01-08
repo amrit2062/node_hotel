@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const authMiddleware = (req, res, next) => {
   try {
+    console.log("====MiddleWare Started====")
     const authHeader = req.headers.authorization;
     console.log("Auth Header:", authHeader);
 
@@ -16,14 +17,14 @@ const authMiddleware = (req, res, next) => {
 
     // Extract token
     const token = authHeader.split(" ")[1];
-    console.log("Token:", token);
+    // console.log("Token:", token);
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Attach user data to request
     req.user = decoded;
-
+    console.log("====Middleware Ended====")
     next();
   } catch (error) {
     return res.status(401).json({
